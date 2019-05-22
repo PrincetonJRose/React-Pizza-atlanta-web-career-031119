@@ -4,7 +4,7 @@ class PizzaList extends Component {
 
   render() {
     return (
-      <table className="table table-striped">
+      <table className="table table-striped" border="1">
         <thead>
           <tr>
             <th scope="col">Topping</th>
@@ -16,6 +16,9 @@ class PizzaList extends Component {
         <tbody>
           {
             //render Pizza here
+            this.props.pizzas.map(pizza => {
+              return <Pizza pizza={pizza} handleClick={this.props.handleClick} />
+            })
           }
         </tbody>
       </table>
