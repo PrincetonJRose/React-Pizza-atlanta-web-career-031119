@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Pizza from '../components/Pizza'
+
 class PizzaList extends Component {
 
   render() {
     return (
-      <table className="table table-striped" border="1">
+      <table className="table table-striped">
         <thead>
           <tr>
             <th scope="col">Topping</th>
@@ -15,10 +16,7 @@ class PizzaList extends Component {
         </thead>
         <tbody>
           {
-            //render Pizza here
-            this.props.pizzas.map(pizza => {
-              return <Pizza pizza={pizza} handleClick={this.props.handleClick} />
-            })
+            this.props.pizzas.map(pizza => <Pizza pizza={pizza} editPizza={this.props.editPizza} /> )
           }
         </tbody>
       </table>
