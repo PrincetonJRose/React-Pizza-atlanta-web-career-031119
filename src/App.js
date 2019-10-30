@@ -2,87 +2,75 @@ import React, { Component, Fragment } from 'react';
 import Header from './components/Header'
 import PizzaForm from './components/PizzaForm'
 import PizzaList from './containers/PizzaList'
-const pizzaUrl = `http://localhost:3000/pizzas/`
-
+const pizzaUrl = 'http://localhost:3000/'
 class App extends Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       pizzas: [],
-      editPizza: null,
+      pizzaToEdit: {},
     }
   }
 
-  componentDidMount(){
-    fetch(pizzaUrl)
-    .then(res => res.json())
-    .then(data => 
-      this.setState(
-        { pizzas: data }, 
-        ()=> console.log(this.state.pizzas)
-      )
-    )
+  componentDidMount () {
+    fetch(pizzaUrl + 'pizzas')
+    .then(r => r.json())
+    .then(pizzaData => this.setState({ pizzas: pizzaData }))
   }
 
-  changeEditPizza =(pizza)=> {
-    this.setState(
-      {editPizza: pizza},
-      ()=> console.log(this.state.editPizza)
-    )
+  editPizza =(pizza)=> {
+    console.log('I hit the button!', pizza)
+    this.setState({ pizzaToEdit: pizza })
   }
 
-    editTopping =(t)=> {
-      this.setState({
-        editPizza: {...this.state.editPizza, topping: t}
-      })
-    }
+  changeTopping =(topping)=> {
+    this.setState({ pizzaToEdit: {...this.state.pizzaToEdit, topping: topping }})
+  }
 
-    editSize =(s)=> {
-      this.setState({
-        editPizza: {...this.state.editPizza, size: s }
-      })
-    }
+  changeSize =(size)=> {
+    this.setState({ pizzaToEdit: {...this.state.pizzaToEdit, size: size }})
+  }
 
-    editVege =(v)=> {
-      this.setState({
-        editPizza: {...this.state.editPizza, vegetarian: v }
-      })
-    }
+  changeVegie =(vegie)=> {
+    this.setState({ pizzaToEdit: {...this.state.pizzaToEdit, vegetarian: vegie }})
+  }
 
-    handleSubmit =()=> {
-      fetch(pizzaUrl + this.state.editPizza.id,{
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(this.state.editPizza)
+  changePizza =(newPizza)=> {
+    fetch(pizzaUrl + `pizzas/${newPizza.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(newPizza)
+    })
+    .then(r => r.json())
+    .then(data => {
+      let changedPizzas = this.state.pizzas.map( pizza => {
+        if (pizza.id === data.id)
+          return data
+        else
+          return pizza
       })
-      .then(res => res.json())
-      .then(data => {
-        let pizzas = this.state.pizzas.map( p => {
-          if (p.id === data.id)
-            return data
-          else
-            return p
-        })
-        this.setState({ pizzas: pizzas })
-      })
-      .catch( errors => console.log(errors))
-    }
+      this.setState({ pizzas: changedPizzas })
+    })
+  }
+
 
   render() {
+    const pizzas = this.state.pizzas
+    console.log("The pizzas:", pizzas)
     return (
       <Fragment>
-        <Header />
+        <Header/>
         <PizzaForm 
-          pizza={this.state.editPizza}
-          editTopping={this.editTopping}
-          editSize={this.editSize}
-          editVege={this.editVege}
-          handleSubmit={this.handleSubmit}
-        />
-        <PizzaList pizzas={this.state.pizzas} editPizza={this.changeEditPizza} />
+          pizza={this.state.pizzaToEdit}
+          changeTopping={this.changeTopping}
+          changeSize={this.changeSize}
+          changeVegie={this.changeVegie}
+          changePizza={this.changePizza}
+          />
+        <PizzaList pizzas={this.state.pizzas} edit={this.editPizza}/>
       </Fragment>
     );
   }

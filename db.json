@@ -2,13 +2,13 @@
   "pizzas": [
     {
       "id": 1,
-      "topping": "Plain",
+      "topping": "Plain (Super Boring)",
       "size": "Small",
       "vegetarian": true
     },
     {
       "id": 2,
-      "topping": "Pepperoni",
+      "topping": "Pepperoni (Mikes Favorite)",
       "size": "Small",
       "vegetarian": false
     },
@@ -20,21 +20,9 @@
     },
     {
       "id": 4,
-      "topping": "Sausage!!!!!",
-      "size": "Large",
-      "vegetarian": false,
-      "editedPizza": {
-        "id": 4,
-        "topping": "Sausage!!!!",
-        "size": "Medium",
-        "vegetarian": false,
-        "editedPizza": {
-          "id": 4,
-          "topping": "Kosher Sausage",
-          "size": "Large",
-          "vegetarian": true
-        }
-      }
+      "topping": "Sausage",
+      "size": "Small",
+      "vegetarian": false
     },
     {
       "id": 5,
